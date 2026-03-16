@@ -1,0 +1,38 @@
+{
+  "name": "@seizure-watch/mobile",
+  "version": "1.0.0",
+  "description": "App React Native — companion y monitoreo para cuidadores",
+  "main": "index.js",
+  "scripts": {
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+    "build:android": "cd android && ./gradlew assembleRelease",
+    "build:ios": "xcodebuild -workspace ios/SeizureWatch.xcworkspace -scheme SeizureWatch -configuration Release"
+  },
+  "dependencies": {
+    "@seizure-watch/core": "*",
+    "react": "18.2.0",
+    "react-native": "0.73.0",
+    "react-native-sensors": "^7.3.6",
+    "@react-native-async-storage/async-storage": "^1.21.0",
+    "@react-native-community/geolocation": "^3.2.0",
+    "react-native-get-random-values": "^1.11.0",
+    "react-native-permissions": "^4.1.0",
+    "react-native-health": "^1.15.0",
+    "@react-navigation/native": "^6.1.0",
+    "@react-navigation/stack": "^6.3.0",
+    "react-native-screens": "^3.29.0",
+    "react-native-safe-area-context": "^4.9.0",
+    "rxjs": "^7.8.0",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-native": "^0.73.0",
+    "@tsconfig/react-native": "^3.0.0",
+    "typescript": "^5.3.0",
+    "jest": "^29.0.0",
+    "@testing-library/react-native": "^12.0.0"
+  }
+}

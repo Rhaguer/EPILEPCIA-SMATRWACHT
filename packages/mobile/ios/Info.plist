@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+
+    <!-- Ubicación -->
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>SeizureWatch necesita tu ubicación para enviarla a los cuidadores en caso de emergencia.</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>SeizureWatch necesita tu ubicación en todo momento para emergencias durante el monitoreo en segundo plano.</string>
+
+    <!-- HealthKit (frecuencia cardíaca) -->
+    <key>NSHealthShareUsageDescription</key>
+    <string>SeizureWatch lee tu frecuencia cardíaca para detectar posibles crisis epilépticas.</string>
+    <key>NSHealthUpdateUsageDescription</key>
+    <string>SeizureWatch registra episodios en HealthKit para facilitar el seguimiento médico.</string>
+
+    <!-- Modo background -->
+    <key>UIBackgroundModes</key>
+    <array>
+        <string>fetch</string>
+        <string>processing</string>
+        <string>remote-notification</string>
+    </array>
+
+    <!-- React Native -->
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <false/>
+    </dict>
+
+    <key>CFBundleName</key>
+    <string>SeizureWatch</string>
+    <key>CFBundleDisplayName</key>
+    <string>SeizureWatch</string>
+    <key>CFBundleIdentifier</key>
+    <string>com.seizurewatch.app</string>
+    <key>CFBundleVersion</key>
+    <string>1</string>
+    <key>CFBundleShortVersionString</key>
+    <string>1.0.0</string>
+
+</dict>
+</plist>

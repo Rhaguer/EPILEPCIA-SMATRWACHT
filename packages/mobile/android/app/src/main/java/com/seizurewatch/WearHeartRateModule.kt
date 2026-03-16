@@ -1,16 +1,3 @@
-// ============================================================
-// WearHeartRateModule.kt
-// Módulo nativo Android (Wear OS) para leer frecuencia cardíaca
-// y exponerla a React Native via NativeModule.
-//
-// Ubicación en el proyecto:
-//   android/app/src/main/java/com/seizurewatch/WearHeartRateModule.kt
-//
-// Registrar en MainApplication.kt:
-//   packages.add(WearHeartRatePackage())
-// ============================================================
-
-/*
 package com.seizurewatch
 
 import android.hardware.Sensor
@@ -20,6 +7,17 @@ import android.hardware.SensorManager
 import com.facebook.react.bridge.*
 import com.facebook.react.modules.core.DeviceEventManagerModule
 
+/**
+ * WearHeartRateModule.kt
+ *
+ * Módulo nativo Wear OS — expone el sensor TYPE_HEART_RATE a React Native.
+ *
+ * Registrar en MainApplication.kt:
+ *   packages.add(WearHeartRatePackage())
+ *
+ * Permisos en AndroidManifest.xml:
+ *   <uses-permission android:name="android.permission.BODY_SENSORS" />
+ */
 class WearHeartRateModule(reactContext: ReactApplicationContext) :
     ReactContextBaseJavaModule(reactContext), SensorEventListener {
 
@@ -33,22 +31,13 @@ class WearHeartRateModule(reactContext: ReactApplicationContext) :
 
     override fun getName() = "WearHeartRateModule"
 
-    // ─── Llamados desde JavaScript ───────────────────────────
-
     @ReactMethod
     fun startMonitoring(intervalMs: Int) {
         if (isMonitoring) return
         hrSensor?.let {
-            // SENSOR_DELAY_NORMAL ≈ 200ms; para HR es suficiente
-            sensorManager.registerListener(
-                this,
-                it,
-                SensorManager.SENSOR_DELAY_NORMAL
-            )
+            sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_NORMAL)
             isMonitoring = true
-        } ?: run {
-            sendEvent("HeartRateError", "HR sensor not available on this device")
-        }
+        } ?: sendEvent("HeartRateError", "Sensor HR no disponible en este dispositivo")
     }
 
     @ReactMethod
@@ -58,11 +47,9 @@ class WearHeartRateModule(reactContext: ReactApplicationContext) :
         isMonitoring = false
     }
 
-    // Requerido por NativeModules para gestionar listeners
+    // Requerido por ReactNative para gestión de listeners JS
     @ReactMethod fun addListener(eventName: String) {}
     @ReactMethod fun removeListeners(count: Int) {}
-
-    // ─── SensorEventListener ────────────────────────────────
 
     override fun onSensorChanged(event: SensorEvent) {
         if (event.sensor.type != Sensor.TYPE_HEART_RATE) return
@@ -71,24 +58,21 @@ class WearHeartRateModule(reactContext: ReactApplicationContext) :
             val params = Arguments.createMap().apply {
                 putInt("bpm", bpm)
                 putDouble("timestamp", System.currentTimeMillis().toDouble())
-                putInt("accuracy", event.accuracy)  // 0=unreliable, 3=high
+                putInt("accuracy", event.accuracy)
             }
             sendEvent("HeartRateUpdate", params)
         }
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-        // Enviar aviso si la precisión cae (reloj mal colocado)
         if (accuracy < SensorManager.SENSOR_STATUS_ACCURACY_MEDIUM) {
             val params = Arguments.createMap().apply {
-                putString("message", "HR sensor accuracy low — check wrist placement")
+                putString("message", "Precisión baja — verifique colocación del reloj")
                 putInt("accuracy", accuracy)
             }
             sendEvent("HeartRateAccuracyWarning", params)
         }
     }
-
-    // ─── Helpers ────────────────────────────────────────────
 
     private fun sendEvent(eventName: String, params: Any) {
         reactApplicationContext
@@ -97,25 +81,10 @@ class WearHeartRateModule(reactContext: ReactApplicationContext) :
     }
 }
 
-// ─── Package wrapper ─────────────────────────────────────────
-
 class WearHeartRatePackage : ReactPackage {
     override fun createNativeModules(context: ReactApplicationContext) =
         listOf(WearHeartRateModule(context))
 
     override fun createViewManagers(context: ReactApplicationContext) =
-        emptyList<ViewManager<*, *>>()
+        emptyList<com.facebook.react.uimanager.ViewManager<*, *>>()
 }
-*/
-
-// ─── NOTA DE USO ───────────────────────────────────────────
-// Este archivo es una guía de implementación en pseudocódigo Kotlin.
-// Para usar:
-// 1. Crear el archivo .kt en la ruta indicada
-// 2. Descomentar el código
-// 3. Agregar permiso en AndroidManifest.xml:
-//    <uses-permission android:name="android.permission.BODY_SENSORS" />
-// 4. Registrar en MainApplication.kt:
-//    packages.add(WearHeartRatePackage())
-
-export {}; // hace que TypeScript trate esto como módulo

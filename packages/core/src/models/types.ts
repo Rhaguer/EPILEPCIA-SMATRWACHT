@@ -1,8 +1,7 @@
-// ============================================================
-// SEIZURE WATCH — Modelos y tipos base
-// Sistema de detección de crisis epilépticas en menores (<18)
-// Plataforma: Agnóstico / Adaptable
-// ============================================================
+// ─────────────────────────────────────────────────────────────
+// @seizure-watch/core — models/types.ts
+// Tipos, interfaces y enumeraciones base del sistema.
+// ─────────────────────────────────────────────────────────────
 
 export interface Vector3D {
   x: number;
@@ -11,27 +10,26 @@ export interface Vector3D {
 }
 
 export interface SensorReading {
-  timestamp: number;            // Unix ms
-  accelerometer: Vector3D;      // g-force
-  gyroscope: Vector3D;          // rad/s
-  heartRate: number | null;     // bpm, null si no disponible
-  skinTemperature?: number;     // °C, opcional
+  timestamp: number;
+  accelerometer: Vector3D;   // g-force
+  gyroscope: Vector3D;       // rad/s
+  heartRate: number | null;  // bpm
+  skinTemperature?: number;  // °C (opcional)
 }
 
-// Tipos de crisis detectables por sensores de consumo
 export enum SeizureType {
-  TONIC_CLONIC      = 'tonic-clonic',       // Gran mal — alta detectabilidad
-  FOCAL_MOTOR       = 'focal-motor',         // Sacudidas unilaterales
-  MYOCLONIC         = 'myoclonic',           // Sacudidas breves repetitivas
-  TONIC             = 'tonic',               // Rigidez sin sacudidas rítmicas
-  HR_ANOMALY        = 'hr-anomaly',          // Solo anomalía cardíaca (ej. ausencias)
-  UNKNOWN           = 'unknown',
+  TONIC_CLONIC = 'tonic-clonic',
+  FOCAL_MOTOR  = 'focal-motor',
+  MYOCLONIC    = 'myoclonic',
+  TONIC        = 'tonic',
+  HR_ANOMALY   = 'hr-anomaly',
+  UNKNOWN      = 'unknown',
 }
 
 export enum SeizurePhase {
-  PREICTAL  = 'preictal',   // Posible aura detectada
-  ICTAL     = 'ictal',      // Crisis activa
-  POSTICTAL = 'postictal',  // Período post-crisis (letargo, bradicardia)
+  PREICTAL  = 'preictal',
+  ICTAL     = 'ictal',
+  POSTICTAL = 'postictal',
 }
 
 export interface SeizureEvent {
@@ -42,11 +40,11 @@ export interface SeizureEvent {
   durationMs?: number;
   type: SeizureType;
   phase: SeizurePhase;
-  confidence: number;           // 0–1
-  peakAcceleration: number;     // g
-  avgHeartRate: number;         // bpm durante la crisis
+  confidence: number;
+  peakAcceleration: number;
+  avgHeartRate: number;
   peakHeartRate: number;
-  motionFrequencyHz: number;    // frecuencia tremor estimada
+  motionFrequencyHz: number;
   alertSent: boolean;
   alertTimestamp?: number;
   postalertAcknowledged?: boolean;
@@ -58,10 +56,10 @@ export interface SeizureEvent {
 export interface PatientProfile {
   id: string;
   name: string;
-  dateOfBirth: string;          // ISO 8601
+  dateOfBirth: string;
   weightKg: number;
-  knownEpilepsyType?: string;   // ej. "Dravet", "JME", "Lennox-Gastaut"
-  baselineHeartRate: number;    // bpm promedio en reposo
+  knownEpilepsyType?: string;
+  baselineHeartRate: number;
   baselineHeartRateMax: number;
   caregivers: CaregiverContact[];
   sensitivityProfile: SensitivityProfile;
@@ -73,18 +71,17 @@ export interface CaregiverContact {
   relationship: string;
   phone: string;
   email?: string;
-  priority: number;             // 1 = primario
+  priority: number;
   notifyViaSMS: boolean;
   notifyViaPush: boolean;
 }
 
-// Ajuste de sensibilidad por tipo de epilepsia / edad
 export interface SensitivityProfile {
-  motionThresholdG: number;         // default 1.5g
-  minTremorFreqHz: number;          // default 3
-  maxTremorFreqHz: number;          // default 20
-  minSeizureDurationMs: number;     // default 10_000 ms
-  hrDeltaThresholdBpm: number;      // default 30
+  motionThresholdG: number;
+  minTremorFreqHz: number;
+  maxTremorFreqHz: number;
+  minSeizureDurationMs: number;
+  hrDeltaThresholdBpm: number;
   postictalDetectionEnabled: boolean;
   falsePositiveSuppressionLevel: 'low' | 'medium' | 'high';
 }
@@ -108,7 +105,7 @@ export interface DetectionResult {
   frequencyHz: number;
   phase: SeizurePhase;
   rawMetrics: {
-    sma: number;              // Signal Magnitude Area
+    sma: number;
     zeroCrossingRate: number;
     hrDelta: number;
     dominantFreq: number;
